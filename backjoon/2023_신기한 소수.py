@@ -1,30 +1,28 @@
 import sys
 sys.stdin = open('input.txt', 'r')
+
 import collections
 
 
+def is_prime(n):
+    for m in range(2, int(n**(1/2)) + 1):
+        if n % m == 0:
+            return False
+    return True
+
+
 N = int(input())
-total = int(10**N * 0.8)
+num_list = collections.deque([2, 3, 5, 7])
 
-is_prime = [True] * total
-is_prime[0] = is_prime[1] = False
-
-for i in range(3, total, 2):
-    if is_prime[i]:
-        for j in range(i, total, 2*i):
-            if is_prime[j]:
-                is_prime[j] = False
-        is_prime[i] = True
-
-odd_numbers = ['1', '3', '7', '9']
-queue = collections.deque(['2', '3', '5', '7'])
+num_next = [1, 3, 7, 9]
 
 for _ in range(N-1):
-    for __ in range(len(queue)):
-        front = queue.popleft()
-        for back in odd_numbers:
-            num = int(front + back)
-            if is_prime[num]:
-                queue.append(str(num))
+    for __ in range(len(num_list)):
+        a = num_list.popleft()
+        for b in num_next:
+            new = 10*a + b
+            if is_prime(new):
+                num_list.append(new)
 
-print('\n'.join(queue))
+for num in num_list:
+    print(num)
